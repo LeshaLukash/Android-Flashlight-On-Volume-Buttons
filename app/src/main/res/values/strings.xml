@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Фонарик на кнопках громкости</string>
+    <string name="monday">пн</string>
+    <string name="tuesday">вт</string>
+    <string name="wednesday">ср</string>
+    <string name="thursday">чт</string>
+    <string name="friday">пт</string>
+    <string name="sunday">сб</string>
+    <string name="saturday">вс</string>
+    <string name="days_label">Дни, по которым работать:</string>
+    <string name="flashlight_on_button_text">Вкл/выкл фонарик</string>.
+    <string name="switch_text">Вкл/выкл отслеживание   </string>
+</resources>
