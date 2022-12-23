@@ -11,7 +11,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 
 public class FlashlightManager {
-    boolean flashlightIsEnabled = false;
+    boolean flashlightStatus = false;
 
     CameraManager cameraManager;
     String cameraID;
@@ -28,7 +28,7 @@ public class FlashlightManager {
             @Override
             public void onTorchModeChanged(@NonNull String cameraId, boolean enabled) {
                 super.onTorchModeChanged(cameraId, enabled);
-                flashlightIsEnabled = enabled;
+                flashlightStatus = enabled;
             }
         };
 
@@ -38,8 +38,13 @@ public class FlashlightManager {
     }
 
     //включает и выключает фонарик задней камеры
-    void run() throws CameraAccessException {
-        cameraManager.setTorchMode(cameraID, !flashlightIsEnabled);
+    void switchLight() throws CameraAccessException {
+        cameraManager.setTorchMode(cameraID, !flashlightStatus);
+    }
+
+    void setStatus(boolean status) throws CameraAccessException {
+        cameraManager.setTorchMode(cameraID, status);
+        flashlightStatus = status;
     }
 
 }

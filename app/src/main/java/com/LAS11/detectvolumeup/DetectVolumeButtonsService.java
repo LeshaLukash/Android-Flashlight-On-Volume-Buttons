@@ -26,8 +26,6 @@ public class DetectVolumeButtonsService extends Service {
 
     public DetectVolumeButtonsService() {
     }
-
-
     /*
     при старте сервиса генерируется неубиваемое уведомление, которое висит в шторке
     оно необходимо для работы foreground-сервиса
@@ -69,8 +67,14 @@ public class DetectVolumeButtonsService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //именно тут начинается регистрация нажатий кнопок громкости
-        controller.startDetectVolumeButtons();
-        Toast.makeText(this, "Нажатие кнопок громкости отслеживается", Toast.LENGTH_SHORT).show();
+        boolean altModeStatus = intent.getBooleanExtra("altMode", false);
+        controller.startDetectVolumeButtons(altModeStatus);
+        if (altModeStatus) {
+            Toast.makeText(this, "Нажатие кнопок громкости отслеживается (работа по удержанию)", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Нажатие кнопок громкости отслеживается", Toast.LENGTH_SHORT).show();
+        }
 
         //по идее должно помогать возобновлять работу сервиса, если оно дало сбой
         return START_STICKY;

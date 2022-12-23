@@ -18,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     Intent serviceIntent;
     SwitchCompat switchDetection;
+    SwitchCompat switchAltMode;
     FlashlightManager flashlight;
+    boolean altMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
         switchDetection = findViewById(R.id.switchDetection);
+        switchAltMode = findViewById(R.id.switchAltMode);
 
         flashlight = new FlashlightManager(this);
         serviceIntent = new Intent(this, DetectVolumeButtonsService.class);
+        serviceIntent.putExtra("altMode", altMode);
 
+        //кнопка посредине экрана, включает и выключает фонарик
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try { flashlight.run(); }
+                try { flashlight.switchLight(); }
                 catch (CameraAccessException e) { e.printStackTrace(); }
             }
         });
@@ -45,9 +50,18 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     startService(serviceIntent);
+                    switchAltMode.setClickable(false);
                 } else {
                     stopService(serviceIntent);
+                    switchAltMode.setClickable(true);
                 }
+            }
+        });
+        switchAltMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                altMode = isChecked;
+                serviceIntent.putExtra("altMode", altMode);
             }
         });
 

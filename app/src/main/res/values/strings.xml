@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Фонарик на кнопках громкости</string>
+    <string name="app_name">ФонарикUP</string>
     <string name="monday">пн</string>
     <string name="tuesday">вт</string>
     <string name="wednesday">ср</string>
@@ -10,4 +10,5 @@
     <string name="days_label">Дни, по которым работать:</string>
     <string name="flashlight_on_button_text">Вкл/выкл фонарик</string>.
     <string name="switch_text">Вкл/выкл отслеживание   </string>
+    <string name="alt_mode_text">Работать по удержанию кнопок громкости   </string>
 </resources>

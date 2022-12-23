@@ -24,12 +24,13 @@ public class VolumeButtonsController {
     MediaSession fakeMediaSession;
     VolumeProvider volumeProvider;
     FlashlightManager flashlightService;
+    boolean altMode = false;
+
 
     public VolumeButtonsController(@NonNull Context c) {
 
         //отслеживание громкости звука в системе
         audioManager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
-
         fakeMediaSession = new MediaSession(c, TAG);
         flashlightService = new FlashlightManager(c);
         volumeProvider = new VolumeProvider(VolumeProvider.VOLUME_CONTROL_RELATIVE, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)) {
@@ -40,8 +41,18 @@ public class VolumeButtonsController {
             @Override
             public void onAdjustVolume(int direction) {
                 //сюда писать требуемый функционал
-                if (direction == 1 || direction == -1) {
-                    try { flashlightService.run(); }
+                if (altMode) {
+                    if (direction == 1 || direction == -1) {
+                        try { flashlightService.setStatus(true); }
+                        catch (CameraAccessException e) { e.printStackTrace(); }
+                    }
+                    else if (direction == 0) {
+                        try { flashlightService.setStatus(false); }
+                        catch (CameraAccessException e) { e.printStackTrace(); }
+                    }
+                }
+                else if (direction == 1 || direction == -1) {
+                    try { flashlightService.switchLight(); }
                     catch (CameraAccessException e) { e.printStackTrace(); }
                 }
                 setCurrentVolume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
@@ -50,11 +61,12 @@ public class VolumeButtonsController {
     }
 
     //фейковая медиасессия начинает свою работу
-    void startDetectVolumeButtons() {
+    void startDetectVolumeButtons(boolean m) {
         fakeMediaSession.setCallback(new MediaSession.Callback(){});
         fakeMediaSession.setPlaybackState(new PlaybackState.Builder().setState(PlaybackState.STATE_PLAYING, 0, 0).build());
         fakeMediaSession.setPlaybackToRemote(volumeProvider);
         fakeMediaSession.setActive(true);
+        altMode = m;
     }
 
     //мы не хотим, что бы сервис висел фоном, пока не удалишь приложение
