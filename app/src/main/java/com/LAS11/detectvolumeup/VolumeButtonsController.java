@@ -71,6 +71,9 @@ public class VolumeButtonsController {
 
     //мы не хотим, что бы сервис висел фоном, пока не удалишь приложение
     void destroy() {
+        try { flashlightService.setStatus(false); }
+        catch (CameraAccessException e) { e.printStackTrace(); }
+
         if (fakeMediaSession != null) {
             fakeMediaSession.setActive(false);
             fakeMediaSession.release();
