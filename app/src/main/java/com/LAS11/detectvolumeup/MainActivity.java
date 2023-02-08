@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 if (isChecked) {
                     startService(serviceIntent);
                     switchAltMode.setClickable(false);
+                    switchAltMode.setAlpha((float) 0.3);
                 } else {
                     stopService(serviceIntent);
                     switchAltMode.setClickable(true);
+                    switchAltMode.setAlpha((float) 1.0);
                 }
             }
         });
